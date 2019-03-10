@@ -11,6 +11,8 @@ public class AlphaMask : MonoBehaviour
     [SerializeField]
     Material _mat;
     RectTransform rect;
+
+    CanvasScaler _scaler;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,10 +32,17 @@ public class AlphaMask : MonoBehaviour
             item.material.SetTexture("_AlphaTex", _alphaTex);
             var pos = rect.worldToLocalMatrix.MultiplyVector(rect.localPosition);
             item.material.SetVector("_AlphaPos", rect.localPosition);
-            item.material.SetFloat("_Width" , rect.sizeDelta.x * rect.lossyScale.x);
-            item.material.SetFloat("_Height", rect.sizeDelta.y * rect.lossyScale.y);
+            var scale = (rect.worldToLocalMatrix.lossyScale);
+            item.material.SetFloat("_Width", rect.sizeDelta.x * rect.lossyScale.x * scale.x * rect.localScale.x);
+            item.material.SetFloat("_Height", rect.sizeDelta.y * rect.lossyScale.y * scale.y * rect.localScale.y);
+        }
+    }
 
-            Debug.Log(transform.lossyScale);
+    private void OnDestroy()
+    {
+        foreach (var item in _images)
+        {
+            item.material = null;
         }
     }
 }
