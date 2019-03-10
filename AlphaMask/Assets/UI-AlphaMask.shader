@@ -60,7 +60,7 @@ Shader "UI/AlphaMask"
 				sampler2D _AlphaTex;
 				float4 _AlphaTex_ST;
 
-				float3 _AlphaPos;
+				float4 _AlphaPos;
 				float _Width;
 				float _Height;
 				v2f vert(appdata_t v)
@@ -69,8 +69,8 @@ Shader "UI/AlphaMask"
 					OUT.vertex = UnityObjectToClipPos(v.vertex);
 					OUT.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
 					OUT.color = v.color;
-					float2 uv = float2(v.vertex.x / (_AlphaPos.x + _Width), v.vertex.y / (_AlphaPos.y + _Height));
-					OUT.texcoordalpha = uv;// TRANSFORM_TEX(uv, _MainTex);
+					float2 uv = float2((v.vertex.x - _AlphaPos.x) / (_Width), (v.vertex.y - _AlphaPos.y) / _Height);
+					OUT.texcoordalpha = TRANSFORM_TEX(uv, _MainTex);
 					return OUT;
 				}
 

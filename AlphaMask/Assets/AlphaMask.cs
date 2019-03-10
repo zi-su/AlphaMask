@@ -23,6 +23,7 @@ public class AlphaMask : MonoBehaviour
         foreach (var item in _images)
         {
             item.material.SetTexture("_AlphaTex", _alphaTex);
+            var pos = rect.worldToLocalMatrix.MultiplyVector(rect.localPosition);
             item.material.SetVector("_AlphaPos", rect.localPosition);
             item.material.SetFloat("_Width", rect.sizeDelta.x);
             item.material.SetFloat("_Height", rect.sizeDelta.y);
